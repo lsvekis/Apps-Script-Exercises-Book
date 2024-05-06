@@ -1,0 +1,11 @@
+function sumSelectedCells() {
+ const range = SpreadsheetApp.getActiveSpreadsheet().getActiveRange();
+ const values = range.getValues();
+ let sum = 0;
+ values.forEach(function(row) {
+ row.forEach(function(cell) {
+ sum += cell;
+ });
+ });
+ SpreadsheetApp.getUi().alert('The sum is: ' + sum);
+}
