@@ -1,0 +1,5 @@
+function insertCurrentDate() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const cell = sheet.getActiveCell();
+ cell.setValue(new Date());
+}
