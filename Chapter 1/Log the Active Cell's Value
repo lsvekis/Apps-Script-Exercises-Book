@@ -1,0 +1,6 @@
+function logActiveCellValue() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const cell = sheet.getActiveCell();
+ Logger.log(cell.getValue());
+}
+
