@@ -1,0 +1,6 @@
+function insertRows() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const activeRow = sheet.getActiveCell().getRow();
+ const numRowsToInsert = 3; // Change this number as needed
+ sheet.insertRowsAfter(activeRow, numRowsToInsert);
+}
