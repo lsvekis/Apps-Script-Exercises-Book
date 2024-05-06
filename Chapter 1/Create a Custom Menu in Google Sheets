@@ -1,0 +1,9 @@
+function onOpen() {
+ var ui = SpreadsheetApp.getUi();
+ ui.createMenu('My Custom Menu')
+ .addItem('Show Message', 'showMessage')
+ .addToUi();
+}
+function showMessage() {
+ SpreadsheetApp.getUi().alert('Hello from Google Sheets!');
+}
