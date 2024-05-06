@@ -1,0 +1,6 @@
+function convertToUppercase() {
+ const range = SpreadsheetApp.getActiveSpreadsheet().getActiveRange();
+ const values = range.getValues();
+ const uppercasedValues = values.map(row => row.map(cell => typeof cell === 'string' ? cell.toUpperCase() : cell));
+ range.setValues(uppercasedValues);
+}
