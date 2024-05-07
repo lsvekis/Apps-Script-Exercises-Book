@@ -1,0 +1,16 @@
+function emailSpreadsheetAsPDF() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getActiveSheet();
+ const url = ss.getUrl().replace(/edit$/, '') + 'export?exportFormat=pdf&format=pdf' +
+ '&size=letter&portrait=true&fitw=true&sheetnames=false&printtitle=false' +
+ '&pagenumbers=false&gridlines=false&fzr=false';
+ const blob = UrlFetchApp.fetch(url, {
+ headers: { 'Authorization': 'Bearer ' + ScriptApp.getOAuthToken() }
+ }).getBlob().setName(sheet.getName() + '.pdf');
+ MailApp.sendEmail({
+ to: "email@example.com",
+ subject: "Monthly Report",
+ body: "Here is the monthly report.",
+ attachments: [blob]
+ });
+}
