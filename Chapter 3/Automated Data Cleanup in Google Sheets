@@ -1,0 +1,7 @@
+function cleanData() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange("B1:B"); // Assuming data is in column B
+ const values = range.getValues();
+ const cleanedValues = values.map(row => [row[0].toString().trim().toLowerCase()]);
+ range.setValues(cleanedValues);
+}
