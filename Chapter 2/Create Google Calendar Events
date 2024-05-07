@@ -1,0 +1,13 @@
+function createCalendarEvents() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const range = sheet.getRange('A2:C');
+  const events = range.getValues();
+  const calendar = CalendarApp.getDefaultCalendar();
+
+  events.forEach(function(event) {
+    // Check if the first element (event title) is not empty
+    if (event[0]) {
+      calendar.createEvent(event[0], new Date(event[1]), new Date(event[2]));
+    }
+  });
+}
