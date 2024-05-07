@@ -1,0 +1,9 @@
+function importData() {
+ const response = UrlFetchApp.fetch("https://randomuser.me/api/?results=5");
+ const data = JSON.parse(response.getContentText());
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ data.results.forEach(function(item, index) {
+ Logger.log(`${item.name.first} ${item.name.last}`);
+ sheet.getRange(index + 1, 1).setValue(`${item.name.first} ${item.name.last}`); // Assume data is an array of objects with 'name' property
+ });
+}
