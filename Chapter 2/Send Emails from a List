@@ -1,0 +1,10 @@
+function sendEmails() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange('A2:A'); // Starts from A2 to skip headers
+ const emails = range.getValues();
+ emails.forEach(function(row) {
+ if (row[0]) {
+ MailApp.sendEmail(row[0], 'Subject Line', 'Hello, this is a test email.');
+ }
+ });
+}
