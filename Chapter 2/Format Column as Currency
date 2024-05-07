@@ -1,0 +1,5 @@
+function formatAsCurrency() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const column = sheet.getRange('B:B'); // Assumes column B, change as needed
+ column.setNumberFormat('$#,##0.00');
+}
