@@ -1,0 +1,6 @@
+function createFilesInDrive() {
+ const folder = DriveApp.createFolder('New Folder');
+ for (let i = 1; i <= 5; i++) {
+ const file = folder.createFile('File ' + i, 'Contents of file ' + i);
+ }
+}
