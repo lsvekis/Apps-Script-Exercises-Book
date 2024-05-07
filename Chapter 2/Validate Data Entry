@@ -1,0 +1,8 @@
+function onEdit(e) {
+ const range = e.range;
+ const value = range.getValue();
+ if (range.getColumn() === 2 && (isNaN(value) || value <= 0)) { // Checks column B
+ SpreadsheetApp.getUi().alert('Please enter a valid number greater than zero.');
+ range.setValue(''); // Clears the invalid entry
+ }
+}
