@@ -1,0 +1,12 @@
+function consolidateData() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const masterSheet = ss.getSheetByName('Master') || ss.insertSheet('Master');
+ const sheets = ss.getSheets();
+ masterSheet.clear(); // Clear existing data
+ sheets.forEach(function(sheet) {
+ if (sheet.getName() !== 'Master') {
+ const data = sheet.getDataRange().getValues();
+ masterSheet.getRange(masterSheet.getLastRow() + 1, 1, data.length, data[0].length).setValues(data);
+ }
+ });
+}
