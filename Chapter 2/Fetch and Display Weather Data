@@ -1,0 +1,8 @@
+function displayWeather() {
+ const response = UrlFetchApp.fetch("https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&current_weather=true");
+ const weatherData = JSON.parse(response.getContentText());
+ const weather = weatherData.current_weather;
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ sheet.getRange("A1").setValue("Temperature: " + weather.temperature + "°C");
+ sheet.getRange("A2").setValue("Windspeed: " + weather.windspeed + " km/h");
+}
