@@ -1,0 +1,10 @@
+function autoRespondEmails() {
+ const threads = GmailApp.search('subject:"Specific Subject"');
+ threads.forEach(function(thread) {
+ const messages = thread.getMessages();
+ const message = messages[messages.length - 1]; // Last message in the thread
+ if (message.getDate() > new Date(Date.now() - 1000 * 60 * 60)) { // Respond only to recent emails
+ GmailApp.sendEmail(message.getFrom(), 'Thank you', 'Thank you for your email!');
+ }
+ });
+}
