@@ -1,0 +1,26 @@
+function updateChartData() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const charts = sheet.getCharts(); // Retrieve all charts
+  if (charts.length > 0) {
+    const chart = charts[0]; // Assume the first chart
+    const range = sheet.getRange('A1:B' + sheet.getLastRow());
+    const modifiedChart = chart.modify().setRange(range).build();
+    sheet.updateChart(modifiedChart);
+  } else {
+    console.error("No charts found in the sheet.");
+  }
+}
+function createChart() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const range = sheet.getRange('A1:B' + sheet.getLastRow());
+  
+  // Insert a new chart
+  const chart = sheet.newChart()
+    .setChartType(Charts.ChartType.LINE)
+    .addRange(range)
+    .setPosition(2, 2, 0, 0)
+    .build();
+  
+  // Add the chart to the sheet
+  sheet.insertChart(chart);
+}
