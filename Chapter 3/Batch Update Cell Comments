@@ -1,0 +1,9 @@
+function updateComments() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange('A1:A10'); // Specify the range
+ let comments = range.getNotes();
+ comments = comments.map(function(note, index) {
+ return ['This is a new comment for cell ' + (index + 1)];
+ });
+ range.setNotes(comments);
+}
