@@ -1,0 +1,8 @@
+function syncCalendarEvents() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Events');
+ const calendar = CalendarApp.getCalendarById('your-calendar-id@example.com');
+ const events = calendar.getEvents(new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)); // Next 7 days
+ events.forEach(function(event) {
+ sheet.appendRow([event.getTitle(), event.getStartTime(), event.getEndTime()]);
+ });
+}
