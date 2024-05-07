@@ -1,0 +1,6 @@
+function duplicateSheet() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const activeSheet = ss.getActiveSheet();
+ const newName = SpreadsheetApp.getUi().prompt('Enter a name for the new sheet').getResponseText();
+ activeSheet.copyTo(ss).setName(newName);
+}
