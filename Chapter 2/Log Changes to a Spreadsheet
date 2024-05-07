@@ -1,0 +1,15 @@
+function logChanges(e) {
+ const logSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Log');
+ const range = e.range;
+ const value = range.getValue();
+ const time = new Date();
+ logSheet.appendRow([time, range.getA1Notation(), value]);
+}
+function createTrigger() {
+  // This function creates a trigger for the logChanges function on edit event
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  ScriptApp.newTrigger('logChanges')
+    .forSpreadsheet(ss)
+    .onEdit()
+    .create();
+}
