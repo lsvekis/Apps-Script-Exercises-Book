@@ -1,0 +1,9 @@
+function onEdit(e) {
+ const range = e.range;
+ const value = range.getValue();
+ if (value > 100) { // Change this threshold as needed
+ range.setBackground('yellow');
+ } else {
+ range.setBackground(null); // Resets to no background
+ }
+}
