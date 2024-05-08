@@ -1,0 +1,16 @@
+function generateNumberImages() {
+  const folderId = FOLDERID;  // Replace with your Google Drive folder ID
+  const folder = DriveApp.getFolderById(folderId);
+  for (let i = 1; i <= 3; i++) {
+    const chart = Charts.newTableChart()
+      .setDataTable(Charts.newDataTable()
+        .addColumn(Charts.ColumnType.STRING, 'Number')
+        .addRow([i.toString()])
+        .build())
+      .setDimensions(300, 100) // Width x Height of the image
+      .build();
+    const imageData = chart.getAs('image/png').getBytes();
+    const blob = Utilities.newBlob(imageData, 'image/png', `Number_${i}.png`);
+    folder.createFile(blob);
+  }
+}
