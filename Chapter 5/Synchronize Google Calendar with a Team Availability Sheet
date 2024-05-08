@@ -1,0 +1,11 @@
+function syncAvailability() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const calendarId = 'your-team-calendar-id@example.com'; // Replace with your Google Calendar ID
+ const calendar = CalendarApp.getCalendarById(calendarId);
+ const events = calendar.getEvents(new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)); // Fetch events for the next week
+ const availabilityData = [];
+ events.forEach(event => {
+ availabilityData.push([event.getTitle(), event.getStartTime(), event.getEndTime()]);
+ });
+ sheet.getRange(1, 1, availabilityData.length, 3).setValues(availabilityData); // Update the sheet with new data
+}
