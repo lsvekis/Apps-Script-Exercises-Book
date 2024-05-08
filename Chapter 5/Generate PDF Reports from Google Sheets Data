@@ -1,0 +1,14 @@
+function generatePDF() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const url = 'https://docs.google.com/spreadsheets/d/' + SpreadsheetApp.getActiveSpreadsheet().getId() + '/export?exportFormat=pdf&format=pdf' +
+ '&size=letter&portrait=true&fitw=true&sheetnames=false&printtitle=false&pagenumbers=false&gridlines=false&fzr=false' +
+ '&gid=' + sheet.getSheetId();
+ const options = {
+ headers: {
+ 'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
+ }
+ };
+ const response = UrlFetchApp.fetch(url, options);
+ const blob = response.getBlob();
+ DriveApp.createFile(blob.setName(sheet.getName() + ".pdf"));
+}
