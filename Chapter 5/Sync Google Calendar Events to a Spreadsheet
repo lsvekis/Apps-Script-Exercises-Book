@@ -1,0 +1,8 @@
+function syncCalendarEvents() {
+ const calendarId = 'your-calendar-id@example.com'; // Replace with your Google Calendar ID
+ const calendar = CalendarApp.getCalendarById(calendarId);
+ const events = calendar.getEvents(new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)); // Fetch events for the next week
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const eventData = events.map(event => [event.getTitle(), event.getStartTime(), event.getEndTime()]);
+ sheet.getRange(1, 1, eventData.length, 3).setValues(eventData); // Assumes the sheet is empty
+}
