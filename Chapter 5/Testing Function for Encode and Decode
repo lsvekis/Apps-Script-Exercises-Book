@@ -1,0 +1,15 @@
+function exampleEncodeDecode() {
+  // Sample text
+  const text = "Hello, world!";
+  // Encode the text to Base64
+  const encodedText = Utilities.base64Encode(text);
+  console.log('Encoded Text:', encodedText);
+
+  // Decode the Base64 back to normal string
+  try {
+    const decodedText = Utilities.newBlob(Utilities.base64Decode(encodedText)).getDataAsString();
+    console.log('Decoded Text:', decodedText);
+  } catch (e) {
+    console.error('Error decoding:', e);
+  }
+}
