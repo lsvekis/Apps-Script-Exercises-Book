@@ -1,0 +1,24 @@
+function archiveCompletedTasks() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const tasksSheet = ss.getSheetByName("Tasks");
+  const completedSheet = ss.getSheetByName("Completed");
+  if (!tasksSheet || !completedSheet) {
+    console.error("One of the sheets does not exist. Check the sheet names.");
+    return; // Exit the function if any sheet is not found
+  }
+  // Get all tasks, starting from the second row to skip the header
+  const tasks = tasksSheet.getRange('A2:B' + tasksSheet.getLastRow()).getValues();
+  let rowsToDelete = [];
+  // Iterate through the tasks and collect the indices of completed tasks
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i][1] === true) { // Check if the checkbox is checked
+      completedSheet.appendRow(tasks[i]);
+      rowsToDelete.push(i + 2); // Add 2 to adjust for header row and 1-based indexing
+    }
+  }
+  // Delete rows from the Tasks sheet, starting from the last to avoid index shifting
+  // Reversing the array to start deletion from the bottom of the sheet
+  rowsToDelete.reverse().forEach((rowIndex) => {
+    tasksSheet.deleteRow(rowIndex);
+  });
+}
