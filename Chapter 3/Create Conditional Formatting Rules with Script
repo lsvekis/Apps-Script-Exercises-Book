@@ -1,0 +1,12 @@
+function setConditionalFormatting() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange("A1:A100");
+ const rule = SpreadsheetApp.newConditionalFormatRule()
+ .whenNumberGreaterThan(100)
+ .setBackground("#FFCCCC")
+ .setRanges([range])
+ .build();
+ const rules = sheet.getConditionalFormatRules();
+ rules.push(rule);
+ sheet.setConditionalFormatRules(rules);
+}
