@@ -1,0 +1,11 @@
+function sendDailyDigest() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange("A1:C" + sheet.getLastRow()); // Adjust range as needed
+ const data = range.getValues();
+ const body = "Daily Update:\n";
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip headers
+ body += `Row ${index + 1}: ${row.join(", ")}\n`;
+ });
+ MailApp.sendEmail("your-email@example.com", "Daily Digest of Sheet Updates", body);
+}
