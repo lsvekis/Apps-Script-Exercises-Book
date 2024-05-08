@@ -1,0 +1,12 @@
+function syncToCalendar() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const eventsRange = sheet.getDataRange();
+ const events = eventsRange.getValues();
+ const calendar = CalendarApp.getDefaultCalendar();
+ events.forEach(event => {
+ const existingEvents = calendar.getEvents(new Date(event[1]), new Date(event[2]), {search: event[0]});
+ if (existingEvents.length === 0) { // No existing event matches
+ calendar.createEvent(event[0], new Date(event[1]), new Date(event[2]));
+ }
+ });
+}
