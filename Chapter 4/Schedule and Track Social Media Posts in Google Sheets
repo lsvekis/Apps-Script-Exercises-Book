@@ -1,0 +1,12 @@
+function schedulePosts() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const posts = sheet.getDataRange().getValues();
+ const today = new Date().toDateString();
+ posts.forEach((post, i) => {
+ if (i === 0 || post[2] === "Posted") return; // Skip header and already posted items
+ if (new Date(post[1]).toDateString() === today) {
+ // Integrate with a social media API to post content
+ sheet.getRange(i + 1, 3).setValue("Posted"); // Mark as posted
+ }
+ });
+}
