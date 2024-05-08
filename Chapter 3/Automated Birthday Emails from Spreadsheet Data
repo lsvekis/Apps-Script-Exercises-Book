@@ -1,0 +1,20 @@
+function sendBirthdayEmails() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet10');
+  const dataRange = sheet.getDataRange();
+  const data = dataRange.getValues();
+  const today = new Date();
+  data.forEach(function(row) {
+    const name = row[0];
+   const birthday = new Date(row[1]); // Convert cell value directly to a Date object
+    // Set the year of the birthday to the current year to compare only month and day
+    birthday.setFullYear(today.getFullYear());
+    if (isSameDay(birthday, today)) {
+      MailApp.sendEmail(EMAIL, "Happy Birthday!", "Happy Birthday, " + name + "!");
+    }
+  });
+}
+// Function to check if two dates are the same day
+function isSameDay(date1, date2) {
+  //Logger.log(date1.getMonth() +' '+ date2.getMonth() +' '+  date1.getDate() +' '+  date2.getDate());
+  return date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+}
