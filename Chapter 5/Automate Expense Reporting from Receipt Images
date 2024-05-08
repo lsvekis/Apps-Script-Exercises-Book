@@ -1,0 +1,12 @@
+function reportExpenses() {
+ const folder = DriveApp.getFolderById('folder-id'); // Replace 'folder-id' with your folder's ID
+ const files = folder.getFiles();
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ while (files.hasNext()) {
+ const file = files.next();
+ const image = DriveApp.getFileById(file.getId());
+ const blob = image.getBlob();
+ const text = DriveApp.createFile(blob).setTrashed(true).getName();
+ sheet.appendRow([Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'MMMM dd, yyyy'), text]);
+ }
+}
