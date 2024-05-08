@@ -1,0 +1,9 @@
+function setUpDashboard() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ sheet.getRange('A1').setValue('Click the button to perform an action');
+ const btn = sheet.insertImage('https://www.example.com/button-image.png', 2, 1);
+ btn.assignScript('triggerAction');
+}
+function triggerAction() {
+ SpreadsheetApp.getUi().alert('Action performed!');
+}
