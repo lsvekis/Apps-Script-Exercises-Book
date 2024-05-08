@@ -1,0 +1,11 @@
+function generateSampleData() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const range = sheet.getRange("A1:A100");
+  // Generate random numeric values between 1 and 200
+  const values = [];
+  for (let i = 0; i < 100; i++) {
+    values.push([Math.floor(Math.random() * 200) + 1]);
+  }
+  // Set the values in column A
+  range.setValues(values);
+}
