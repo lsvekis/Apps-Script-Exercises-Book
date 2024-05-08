@@ -1,0 +1,22 @@
+function createTasksFromSheet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  
+  // Create a new task list
+  const taskList = Tasks.Tasklists.insert({ title: 'New Task List' });
+  
+  // Iterate through the data, skipping the header row
+  data.forEach((item, index) => {
+    if (index === 0) return; // Skip header row
+    
+    // Check if the due date is provided and valid
+    const dueDate = item[2] ? new Date(item[2]).toISOString() : undefined;
+    
+    // Create a new task in the created task list
+    Tasks.Tasks.insert({
+      title: item[0],     // Task title from the first column
+      notes: item[1],     // Notes from the second column
+      due: dueDate        // ISO string of the due date, if provided
+    }, taskList.id);
+  });
+}
