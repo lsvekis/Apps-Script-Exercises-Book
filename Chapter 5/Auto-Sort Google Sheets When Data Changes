@@ -1,0 +1,5 @@
+function onEdit(e) {
+ const sheet = e.source.getActiveSheet();
+ const range = sheet.getRange("A2:B" + sheet.getLastRow()); // Adjust the range as necessary
+ range.sort({column: 1, ascending: true});
+}
