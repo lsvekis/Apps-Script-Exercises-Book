@@ -1,0 +1,5 @@
+function saveBlobToDrive(blob) {
+  const folder = DriveApp.getFolderById('YOUR_FOLDER_ID'); // Replace with your folder ID
+  const newFile = folder.createFile(blob);
+  Logger.log("New file created with ID: " + newFile.getId());
+}
