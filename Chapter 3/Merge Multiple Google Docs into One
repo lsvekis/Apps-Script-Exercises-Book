@@ -1,10 +1,15 @@
 function mergeDocuments() {
  const docIds = ['docId1', 'docId2', 'docId3']; // Replace with actual Google Docs IDs
- const finalDoc = DocumentApp.create('Merged Document');
- const finalBody = finalDoc.getBody();
- docIds.forEach(function(id) {
- const doc = DocumentApp.openById(id);
- const content = doc.getBody().copy();
- finalBody.appendParagraph(content);
- });
+  const finalDoc = DocumentApp.create('Merged Document');
+  const finalBody = finalDoc.getBody();
+  
+  docIds.forEach(function(id) {
+    const doc = DocumentApp.openById(id);
+    const content = doc.getBody().getParagraphs();
+    
+    // Append a copy of each paragraph individually
+    content.forEach(function(paragraph) {
+      finalBody.appendParagraph(paragraph.copy());
+    });
+  });
 }
