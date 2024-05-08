@@ -1,0 +1,12 @@
+function syncContacts() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const contacts = ContactsApp.getContacts();
+  const data = contacts.map(function(contact) {
+    return [
+      contact.getFullName(),
+      contact.getEmails().map(email => email.getAddress()).join(", "),
+      contact.getPhones().map(phone => phone.getPhoneNumber()).join(", ")
+    ];
+  });
+  sheet.getRange(1, 1, data.length, 3).setValues(data);
+}
