@@ -1,0 +1,12 @@
+function getFileAsBlob() {
+  const fileId = 'YOUR_FILE_ID';  // Replace this with the actual file ID
+  try {
+    const file = DriveApp.getFileById(fileId);
+    const blob = file.getBlob();
+    Logger.log("File retrieved and converted to blob successfully.");
+    return blob;
+  } catch (error) {
+    Logger.log("Error retrieving file: " + error.toString());
+    return null;
+  }
+}
