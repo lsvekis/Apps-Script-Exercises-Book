@@ -1,0 +1,13 @@
+function updateSheetFromEmail() {
+ const threads = GmailApp.getInboxThreads(0, 10); // Retrieves the latest 10 email threads
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ threads.forEach(thread => {
+ const messages = thread.getMessages();
+ const message = messages[messages.length - 1]; // Get the latest message in each thread
+ const body = message.getPlainBody();
+ // Check for specific keywords and update the spreadsheet
+ if (body.includes("keyword1")) {
+ sheet.appendRow([new Date(), "Keyword1 found in email", message.getSubject(), message.getDate()]);
+ }
+ });
+}
