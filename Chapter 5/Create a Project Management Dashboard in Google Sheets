@@ -1,0 +1,16 @@
+function setupDashboard() {
+  const ui = SpreadsheetApp.getUi(); // Get the UI environment of the spreadsheet
+  const charts = ui.createMenu('Charts'); // Create a new menu in the spreadsheet UI
+  charts.addItem('Generate Status Chart', 'drawChart'); // Add an item to the menu
+  charts.addToUi(); // Add the menu to the UI so it's visible
+}
+function drawChart() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange('A1:B10'); // Assumes status data is in columns A and B
+ const chart = sheet.newChart()
+ .setChartType(Charts.ChartType.PIE)
+ .addRange(range)
+ .setPosition(5, 6, 0, 0)
+ .build();
+ sheet.insertChart(chart);
+}
