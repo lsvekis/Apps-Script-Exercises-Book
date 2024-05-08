@@ -1,0 +1,10 @@
+function monitorDriveFolder() {
+ const folderId = 'your-folder-id'; // Replace with your folder's ID
+ const folder = DriveApp.getFolderById(folderId);
+ const files = folder.getFiles();
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ while (files.hasNext()) {
+ const file = files.next();
+ sheet.appendRow([file.getName(), file.getUrl(), new Date()]);
+ }
+}
