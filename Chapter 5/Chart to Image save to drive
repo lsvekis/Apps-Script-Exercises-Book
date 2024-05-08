@@ -1,0 +1,16 @@
+function generateChartImage() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const range = sheet.getRange("A1:B4"); // Adjust range according to your data
+  const chartBuilder = sheet.newChart()
+      .setChartType(Charts.ChartType.BAR)
+      .addRange(range)
+      .setPosition(5, 5, 0, 0)
+      .setOption('title', 'Department Expenses');
+  const chart = chartBuilder.build();
+  const chartBlob = chart.getBlob(); // Get the chart as a blob
+  const base64Image = Utilities.base64Encode(chartBlob.getBytes());
+  // Optionally: Log the Base64 string or further use
+  Logger.log(base64Image);
+  saveImageToDrive(base64Image);
+  return base64Image;
+}
