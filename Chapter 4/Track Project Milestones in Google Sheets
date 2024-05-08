@@ -1,0 +1,12 @@
+function updateMilestones() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const today = new Date();
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip header
+ const dueDate = new Date(row[1]);
+ if (dueDate <= today && row[2] !== "Completed") {
+ sheet.getRange(index + 1, 3).setValue("Completed");
+ }
+ });
+}
