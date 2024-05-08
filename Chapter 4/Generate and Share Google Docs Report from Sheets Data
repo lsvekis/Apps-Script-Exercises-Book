@@ -1,0 +1,11 @@
+function generateAndShareReport() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const doc = DocumentApp.create('Generated Report');
+ const body = doc.getBody();
+ data.forEach(row => body.appendParagraph(row.join(", ")));
+ doc.saveAndClose();
+ const docId = doc.getId();
+ const file = DriveApp.getFileById(docId);
+ file.addViewer('email@example.com'); // Add more viewers as needed
+}
