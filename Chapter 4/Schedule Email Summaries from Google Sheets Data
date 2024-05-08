@@ -1,0 +1,11 @@
+function sendWeeklySummary() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const dataRange = sheet.getDataRange();
+ const data = dataRange.getValues();
+ const summary = data.reduce((acc, row) => acc + row[0] + ": " + row[1] + "\n", "Weekly Summary:\n");
+ MailApp.sendEmail({
+ to: "email@example.com",
+ subject: "Weekly Data Summary",
+ body: summary
+ });
+}
