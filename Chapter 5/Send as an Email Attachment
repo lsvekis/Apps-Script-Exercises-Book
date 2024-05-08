@@ -1,0 +1,13 @@
+function sendEmailWithAttachment(blob) {
+  const recipient = "example@example.com";  // Set the recipient email address
+  const subject = "Here's your file";
+  const body = "Attached is the file you requested.";
+  
+  const options = {
+    attachments: [blob],
+    name: 'Automated Email Sender'
+  };
+
+  MailApp.sendEmail(recipient, subject, body, options);
+  Logger.log("Email sent with attachment.");
+}
