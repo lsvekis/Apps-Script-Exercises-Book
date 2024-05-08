@@ -1,0 +1,24 @@
+function syncDataFromAPI() {
+  const apiURL = 'https://jsonplaceholder.typicode.com/todos/1'; // API URL
+  const options = {
+    'method': 'get',
+    'contentType': 'application/json'
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(apiURL, options);
+    const data = JSON.parse(response.getContentText());
+
+    if (data) {
+      const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      // Since we're fetching a single item, we don't need to map through an array
+      const row = [[data.id, data.title, data.completed]]; // Create an array of arrays to fit setValues() requirements
+
+      sheet.getRange(2, 1, 1, 3).setValues(row); // Assumes headers are in row 1
+    } else {
+      Logger.log('No data returned from API');
+    }
+  } catch (e) {
+    Logger.log('Failed to fetch data from API: ' + e.toString());
+  }
+}
