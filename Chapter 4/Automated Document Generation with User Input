@@ -1,0 +1,13 @@
+function generateDocument() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues(); // Assumes data starts from row 2 with headers in row 1
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip header row
+ const doc = DocumentApp.create('Document for ' + row[0]);
+ const body = doc.getBody();
+ body.appendParagraph('Name: ' + row[0]);
+ body.appendParagraph('Address: ' + row[1]);
+ body.appendParagraph('Email: ' + row[2]);
+ doc.saveAndClose();
+ });
+}
