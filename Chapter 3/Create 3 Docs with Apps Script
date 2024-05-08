@@ -1,0 +1,44 @@
+function createBlogPosts() {
+  const docTitles = ["Blog Post 1", "Blog Post 2", "Blog Post 3"];
+  
+  // Loop through each title to create a document
+  for (let i = 0; i < docTitles.length; i++) {
+    const doc = DocumentApp.create(docTitles[i]);
+    const body = doc.getBody();
+    
+    // Generate random content for the blog post
+    const content = generateRandomContent();
+    
+    // Append the content to the document body
+    body.appendParagraph(content);
+    Logger.log(doc.getId());
+    // Save and close the document
+    doc.saveAndClose();
+  }
+}
+
+// Function to generate random content
+function generateRandomContent() {
+  const paragraphs = [];
+  
+  // Define possible content for the blog post
+  const contentOptions = [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  ];
+  
+  // Generate random number of paragraphs (between 3 and 7)
+  const numParagraphs = Math.floor(Math.random() * 5) + 3;
+  
+  // Randomly select content for each paragraph
+  for (let i = 0; i < numParagraphs; i++) {
+    const randomIndex = Math.floor(Math.random() * contentOptions.length);
+    paragraphs.push(contentOptions[randomIndex]);
+  }
+  
+  // Join paragraphs into a single string with line breaks
+  return paragraphs.join("\n\n");
+}
