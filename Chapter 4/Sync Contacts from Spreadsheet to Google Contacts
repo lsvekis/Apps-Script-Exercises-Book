@@ -1,0 +1,13 @@
+function syncContacts() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const contacts = ContactsApp.getContacts();
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip headers
+ const email = row[2];
+ const existingContact = contacts.find(contact => contact.getEmails().some(e => e.getAddress() === email));
+ if (!existingContact) {
+ const contact = ContactsApp.createContact(row[0], row[1], email);
+ }
+ });
+}
