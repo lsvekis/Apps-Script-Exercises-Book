@@ -1,0 +1,9 @@
+function inventoryAlerts() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ data.forEach((row, index) => {
+ if (index === 0 || row[1] >= row[2]) return; // Skip header and items above threshold
+ const message = `Alert: Stock for ${row[0]} is below the required minimum. Current stock: ${row[1]}`;
+ MailApp.sendEmail("inventory-manager@example.com", "Inventory Alert", message);
+ });
+}
