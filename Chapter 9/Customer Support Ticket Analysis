@@ -1,0 +1,14 @@
+function analyzeSupportTickets() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const summary = {};
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip header
+ const resolutionTime = (new Date(row[4]) - new Date(row[3])) / (1000 * 60 * 60 * 24); // Calculate resolution time in days
+ row[5] = resolutionTime; // Assuming Resolution Time is in column F
+ sheet.getRange(index + 1, 6).setValue(resolutionTime);
+ if (!summary[row[1]]) summary[row[1]] = [];
+ summary[row[1]].push(resolutionTime);
+ });
+ Logger.log("Category Summary: ", summary);
+}
