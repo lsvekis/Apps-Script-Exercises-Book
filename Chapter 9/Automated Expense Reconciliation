@@ -1,0 +1,12 @@
+function reconcileExpenses() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const reportsSheet = ss.getSheetByName("Reports");
+ const approvedSheet = ss.getSheetByName("Approved");
+ const reports = reportsSheet.getDataRange().getValues();
+ const approved = approvedSheet.getDataRange().getValues();
+ reports.forEach((report, i) => {
+ if (i === 0) return; // Skip header
+ const matched = approved.find(app => app[0] === report[0] && app[1] === report[1]);
+ reportsSheet.getRange(i + 1, 3).setValue(matched ? "Matched" : "Unmatched");
+ });
+}
