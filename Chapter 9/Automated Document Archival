@@ -1,0 +1,16 @@
+function archiveOldDocuments() {
+ const folderId = 'source-folder-id'; // Source folder
+ const archiveFolderId = 'archive-folder-id'; // Archive folder
+ const folder = DriveApp.getFolderById(folderId);
+ const archiveFolder = DriveApp.getFolderById(archiveFolderId);
+ const files = folder.getFiles();
+ const cutoffDate = new Date();
+ cutoffDate.setFullYear(cutoffDate.getFullYear() - 1); // Documents older than 1 year
+ while (files.hasNext()) {
+ const file = files.next();
+ if (file.getDateCreated() < cutoffDate) {
+ file.moveTo(archiveFolder);
+ Logger.log('Archived ' + file.getName());
+ }
+ }
+}
