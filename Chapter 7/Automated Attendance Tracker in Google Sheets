@@ -1,0 +1,15 @@
+function trackAttendance() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const range = sheet.getRange("A2:C" + lastRow);
+  const data = range.getValues();
+  const today = new Date();
+  const todayString = Utilities.formatDate(today, Session.getScriptTimeZone(), "MM/dd/yyyy");
+
+  data.forEach((row, index) => {
+    const rowDate = Utilities.formatDate(new Date(row[0]), Session.getScriptTimeZone(), "MM/dd/yyyy");
+    if (rowDate === todayString && row[2] !== 'Present') {
+      sheet.getRange(index + 2, 3).setValue('Absent');
+    }
+  });
+}
