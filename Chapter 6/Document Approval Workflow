@@ -1,0 +1,10 @@
+function sendForApproval() {
+ const docId = 'your-document-id'; // Replace with your document's ID
+ const docUrl = DocumentApp.openById(docId).getUrl();
+ const approverEmail = 'approver@example.com'; // Replace with the approver's email
+ MailApp.sendEmail({
+ to: approverEmail,
+ subject: "Document Approval Required",
+ htmlBody: "Please review the following document and approve it: <a href='" + docUrl + "'>Review Document</a>"
+ });
+}
