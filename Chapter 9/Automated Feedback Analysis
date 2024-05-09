@@ -1,0 +1,22 @@
+function analyzeFeedback() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const categories = {};
+
+  data.forEach((row, index) => {
+    if (index === 0 || row[2]) return; // Skip header row or already categorized feedback
+    const category = categorizeFeedback(row[1]); // Categorize the feedback
+    sheet.getRange(index + 1, 3).setValue(category); // Write the category into column C
+    if (!categories[category]) categories[category] = 0;
+    categories[category]++;
+  });
+
+  Logger.log(categories); // Log the count of each category
+}
+
+function categorizeFeedback(text) {
+  // Simplified categorization logic based on keywords
+  if (text.includes("excellent")) return "Positive";
+  if (text.includes("poor")) return "Negative";
+  return "Neutral";
+}
