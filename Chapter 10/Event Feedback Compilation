@@ -1,0 +1,13 @@
+function compileFeedback() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const mainSheet = ss.getSheetByName("Compiled Feedback") || ss.insertSheet("Compiled Feedback");
+ const sheets = ss.getSheets();
+ sheets.forEach(sheet => {
+ if (sheet.getName() !== "Compiled Feedback") {
+ const data = sheet.getDataRange().getValues();
+ data.forEach((row, index) => {
+ if (index > 0) mainSheet.appendRow(row); // Skip headers and append data to the main sheet
+ });
+ }
+ });
+}
