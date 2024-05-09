@@ -1,0 +1,28 @@
+function testOnEdit() {
+  // Create a fake range object in a specific sheet and cell
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Track Changes"); // Ensure this sheet exists
+  const range = sheet.getRange("A2"); // Simulate editing A2
+  // Set the fake event object
+  const e = {
+    range: range,
+    oldValue: 'Old Value', // Simulate the old value
+    value: range.getValue(), // Directly get the new value from the sheet
+    source: ss,
+    authMode: ScriptApp.AuthMode.LIMITED
+  };
+  // Call the original onEdit function with the simulated event object
+  onEdit(e);
+}
+function onEdit(e) {
+  const range = e.range;
+  const sheet = range.getSheet();
+  Logger.log(e.oldValue);
+  if (sheet.getName() === "Track Changes" && range.getColumn() === 1) {
+    const oldValue = e.oldValue;
+    const newValue = e.value;
+    const message = `Cell ${range.getA1Notation()} changed from ${oldValue} to ${newValue}`;
+    const email = "your-email@example.com"; // Replace with actual email address
+    MailApp.sendEmail(email, "Sheet Edit Notification", message);
+  }
+}
