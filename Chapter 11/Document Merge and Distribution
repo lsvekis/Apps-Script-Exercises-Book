@@ -1,0 +1,18 @@
+function mergeAndDistributeDocuments() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getSheetByName("Docs and Recipients");
+ const data = sheet.getDataRange().getValues();
+ const masterDoc = DocumentApp.create("Master Document");
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip header row
+ const doc = DocumentApp.openById(row[0]);
+ const content = doc.getBody().copy();
+ masterDoc.getBody().appendParagraph(content);
+ if (index === data.length - 1) { // After the last document is processed
+ masterDoc.saveAndClose();
+ MailApp.sendEmail(row[1], "Merged Document", "Please find the attached merged document.", {
+ attachments: [masterDoc.getAs(MimeType.PDF)]
+ });
+ }
+ });
+}
