@@ -1,0 +1,13 @@
+function importEmails() {
+ const threads = GmailApp.search('subject:"specific subject"');
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ threads.forEach(thread => {
+ const messages = thread.getMessages();
+ messages.forEach(message => {
+ const date = message.getDate();
+ const subject = message.getSubject();
+ const body = message.getPlainBody();
+ sheet.appendRow([date, subject, body]);
+ });
+ });
+}
