@@ -1,0 +1,35 @@
+function createAndSendInvoices() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const templateDocId = '1i1xoWvRAGnqi2_Q'; // Replace with the ID of a Google Docs invoice template
+data.forEach((row, index) => {
+  if (index === 0) return; // Skip the header row
+  const quantity = Number(row[2]); // Convert to number, NaN if conversion fails
+  const price = Number(row[3]);
+  if (isNaN(quantity) || isNaN(price)) {
+    console.error('Invalid data in row ' + (index + 1));
+    return; // Skip this row
+  }
+  const totalPrice = quantity * price;
+  const docId = DriveApp.getFileById(templateDocId).makeCopy('Invoice for ' + row[0]).getId();
+  const doc = DocumentApp.openById(docId);
+  const body = doc.getBody();
+  body.replaceText('{{Customer Name}}', row[0]);
+  body.replaceText('{{Product}}', row[1]);
+  body.replaceText('{{Quantity}}', quantity.toString());
+  body.replaceText('{{Price}}', '$' + price.toFixed(2));
+  body.replaceText('{{Total}}', '$' + totalPrice.toFixed(2));
+ const file = DriveApp.getFileById(docId);
+ const pdf = file.getAs('application/pdf');
+ const recipient = row[4]; // Customer email
+ MailApp.sendEmail({
+ to: recipient,
+ subject: 'Invoice from Your Company',
+ body: 'Dear ' + row[0] + ',\n\nPlease find attached your invoice.',
+ attachments: [pdf]
+ });
+ // Move the invoice to a specific folder after sending (optional)
+ const folder = DriveApp.getFolderById(FOLDERID ); // Replace with your folder's ID
+ file.moveTo(folder);
+ });
+}
