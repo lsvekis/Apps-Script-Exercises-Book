@@ -1,0 +1,13 @@
+function sendCustomEmails() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip header row
+ MailApp.sendEmail({
+ to: row[0],
+ subject: "Update for " + row[1],
+ body: "Hello " + row[1] + ",\n\n" + row[2] + "\n\nBest regards,\nYour Team"
+ });
+ });
+}
