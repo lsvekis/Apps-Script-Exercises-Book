@@ -1,0 +1,12 @@
+function scoreLeads() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow(); // Get the last row with data
+  const data = sheet.getRange("A2:D" + lastRow).getValues(); // Read data from A2 to D(lastRow)
+  
+  data.forEach((row, index) => {
+    // Calculate the score using the weighted formula
+    const score = (row[1] * 2) + (row[2] * 3) + (row[3] * 5);
+    // Write the calculated score to the fifth column of the respective row
+    sheet.getRange(index + 2, 5).setValue(score);
+  });
+}
