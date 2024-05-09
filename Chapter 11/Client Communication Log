@@ -1,0 +1,18 @@
+function logClientCommunications() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getSheetByName("Email Log");
+ const query = 'to:client@example.com'; // Customize this search query as needed
+ const threads = GmailApp.search(query);
+ const log = [];
+ threads.forEach(thread => {
+ const messages = thread.getMessages();
+ messages.forEach(message => {
+ const date = message.getDate();
+ const to = message.getTo();
+ const subject = message.getSubject();
+ const body = message.getPlainBody();
+ log.push([date, to, subject, body]);
+ });
+ });
+ sheet.getRange(sheet.getLastRow() + 1, 1, log.length, 4).setValues(log);
+}
