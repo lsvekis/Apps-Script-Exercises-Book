@@ -1,0 +1,22 @@
+function generateRoster() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Roster");
+  if (!sheet) {
+    console.log("Roster sheet does not exist.");
+    return;
+  }
+  const data = sheet.getDataRange().getValues();
+  const roster = {};
+  // First pass to build the roster based on preferences
+  data.forEach((row, index) => {
+    if (index === 0) return; // Skip header row
+    if (!roster[row[1]]) roster[row[1]] = {}; // Initialize day if not already
+    roster[row[1]][row[0]] = row[2]; // Map shift preference to staff for each day
+  });
+  // Second pass to assign shifts based on the built roster
+  data.forEach((row, index) => {
+    if (index === 0) return; // Skip header row
+    const assignedShift = roster[row[1]][row[0]]; // Retrieve assigned shift from the roster
+    sheet.getRange(index + 1, 4).setValue(assignedShift); // Set Assigned Shift in column D
+  });
+}
