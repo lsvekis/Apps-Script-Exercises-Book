@@ -1,0 +1,25 @@
+function autoFormatNewSheets() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const template = ss.getSheetByName("Template");
+  if (!template) {
+    Logger.log("Template sheet not found.");
+    return;
+  }
+  const sheets = ss.getSheets();
+  sheets.forEach(sheet => {
+    Logger.log("Checking sheet: " + sheet.getName());
+    if (sheet.getName() !== "Template" && sheet.getLastRow() === 0) {
+      Logger.log("Formatting new sheet: " + sheet.getName());
+      const range = template.getRange("A1:D4");
+      const backgrounds = range.getBackgrounds();  // Fetch backgrounds from the template
+      Logger.log("Backgrounds fetched: " + JSON.stringify(backgrounds));
+      if (backgrounds.length > 0 && backgrounds[0].length > 0) {
+        sheet.getRange(1, 1, backgrounds.length, backgrounds[0].length).setBackgrounds(backgrounds);
+      } else {
+        Logger.log("No backgrounds found to apply.");
+      }
+    } else {
+      Logger.log("Sheet is not new or empty: " + sheet.getName());
+    }
+  });
+}
