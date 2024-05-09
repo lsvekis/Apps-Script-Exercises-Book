@@ -1,0 +1,24 @@
+function onEdit(e) {
+  // Get the range that was edited
+  const range = e.range;
+  const sheet = range.getSheet();
+  // Check if the edit was made in the 'Track Changes' sheet and in column A
+  if (sheet.getName() === "Track Changes" && range.getColumn() === 1) {
+    // Retrieve the old and new values
+    const oldValue = e.oldValue || 'empty';  // If oldValue is undefined, use 'empty'
+    const newValue = range.getValue();  // Corrected method to get the new value
+    // Construct the message for the email
+    const message = `Cell ${range.getA1Notation()} changed from ${oldValue} to ${newValue}`;
+    // Define the email address for notifications (replace 'your-email@example.com' with the actual address)
+    const email = 'your-email@example.com';
+    // Send an email notification about the change
+    try {
+      MailApp.sendEmail(EMAIL, "Sheet Edit Notification", message);
+      Logger.log('Email sent: ' + message);
+    } catch (error) {
+      Logger.log('Failed to send email: ' + error.toString());
+    }
+  } else {
+    Logger.log('Edit did not meet criteria for notification.');
+  }
+}
