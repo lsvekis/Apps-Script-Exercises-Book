@@ -1,0 +1,9 @@
+function setDataValidation() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const criteriaSheet = ss.getSheetByName("Criteria");
+ const dataSheet = ss.getSheetByName("Data");
+ const range = dataSheet.getRange("A2:A"); // Adjust the range as needed
+ const criteria = criteriaSheet.getRange("A2:A").getValues().flat();
+ const rule = SpreadsheetApp.newDataValidation().requireValueInList(criteria, true).build();
+ range.setDataValidation(rule);
+}
