@@ -1,0 +1,8 @@
+function cleanAndNormalizeData() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getDataRange();
+ const data = range.getValues();
+ const cleanedData = data.map(row => row.map(cell => typeof cell === 'string' ? cell.trim().toLowerCase() : cell));
+ range.setValues(cleanedData);
+ // Additional normalization logic can be added here
+}
