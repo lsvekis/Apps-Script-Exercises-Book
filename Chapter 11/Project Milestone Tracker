@@ -1,0 +1,15 @@
+function trackMilestones() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const milestones = sheet.getDataRange().getValues();
+ const today = new Date();
+ milestones.forEach((milestone, i) => {
+ if (i === 0 || milestone[3] === "Completed") return; // Skip header and completed milestones
+ const dueDate = new Date(milestone[2]);
+ const daysLeft = (dueDate - today) / (1000 * 3600 * 24);
+ if (daysLeft <= 7) {
+ const status = daysLeft <= 0 ? "Overdue" : "Due soon";
+ sheet.getRange(i + 1, 4).setValue(status);
+ MailApp.sendEmail(milestone[4], "Milestone Alert", `Reminder: The milestone '${milestone[0]}' for project '${milestone[1]}' is ${status}.`);
+ }
+ });
+}
