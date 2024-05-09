@@ -1,0 +1,20 @@
+function populateSheetWithDocIDs() {
+  // ID of the folder where the documents are stored
+  const sourceFolderId = '1CIWh8FL_LlA-';  // Replace with your source folder ID
+  const sourceFolder = DriveApp.getFolderById(sourceFolderId);
+  const files = sourceFolder.getFiles();
+  
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  sheet.clear();  // Clear existing data
+  sheet.appendRow(['Document ID', 'Document Name']);  // Create headers
+  
+  // Iterate over all files in the folder
+  while (files.hasNext()) {
+    const file = files.next();
+    const docId = file.getId();
+    const docName = file.getName();
+    
+    // Write document ID and name to the sheet
+    sheet.appendRow([docId, docName]);
+  }
+}
