@@ -1,0 +1,9 @@
+function backupDocuments() {
+ const docIds = ['doc-id-1', 'doc-id-2']; // Replace with actual document IDs
+ const backupFolder = DriveApp.getFolderById('backup-folder-id'); // Replace with your backup folder's ID
+ docIds.forEach(id => {
+ const file = DriveApp.getFileById(id);
+ const copy = file.makeCopy(file.getName() + ' - Backup ' + new Date().toISOString(), backupFolder);
+ Logger.log('Backed up: ' + copy.getName());
+ });
+}
