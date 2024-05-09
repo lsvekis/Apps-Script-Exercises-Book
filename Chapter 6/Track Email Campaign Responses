@@ -1,0 +1,13 @@
+function sendEmailCampaign() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ data.forEach((row, index) => {
+ if (index === 0 || row[2] === "Sent") return; // Skip headers and already sent emails
+ MailApp.sendEmail({
+ to: row[0],
+ subject: "Campaign Message",
+ body: row[1]
+ });
+ sheet.getRange(index + 1, 3).setValue("Sent"); // Mark as sent
+ });
+}
