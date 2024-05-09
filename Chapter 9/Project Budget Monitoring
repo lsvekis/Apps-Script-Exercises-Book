@@ -1,0 +1,14 @@
+function monitorBudget() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const projects = sheet.getRange("A2:C" + lastRow).getValues();  // Fetch project data from the sheet
+  
+  projects.forEach((project, i) => {
+    const budgetLeft = project[1] - project[2];  // Calculate remaining budget
+    if (budgetLeft < 500) {  // Check if remaining budget is below the threshold of $500
+      // Send email alert about the low budget status
+      MailApp.sendEmail("manager@example.com", "Budget Alert for " + project[0],
+        "The project '" + project[0] + "' is nearing its budget limit with only $" + budgetLeft + " remaining.");
+    }
+  });
+}
