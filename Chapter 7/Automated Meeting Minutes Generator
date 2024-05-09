@@ -1,0 +1,8 @@
+function generateMeetingMinutes() {
+ const docId = DOCID; // Replace with your document's ID
+ const doc = DocumentApp.openById(docId);
+ const content = doc.getBody().getText();
+ const minutesDoc = DocumentApp.create('Meeting Minutes - ' + new Date().toISOString());
+ minutesDoc.getBody().setText(content);
+ minutesDoc.saveAndClose();
+}
