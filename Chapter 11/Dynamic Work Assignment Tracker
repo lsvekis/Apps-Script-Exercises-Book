@@ -1,0 +1,12 @@
+function assignTasks() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getSheetByName("Tasks");
+ const tasks = sheet.getDataRange().getValues();
+ const teamMembers = ["Alice", "Bob", "Charlie"];
+ tasks.forEach((task, i) => {
+ if (i === 0 || task[3] !== "Pending") return; // Skip header and non-pending tasks
+ const member = teamMembers[i % teamMembers.length]; // Simple round-robin assignment
+ sheet.getRange(i + 1, 2).setValue(member); // Assign task
+ sheet.getRange(i + 1, 4).setValue("Assigned");
+ });
+}
