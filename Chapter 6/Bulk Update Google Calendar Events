@@ -1,0 +1,13 @@
+function updateCalendarEvents() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const calendar = CalendarApp.getDefaultCalendar();
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip header row
+ const event = calendar.getEventById(row[0]);
+ if (event) {
+ event.setTitle(row[1]);
+ event.setTime(new Date(row[2]), new Date(row[3]));
+ }
+ });
+}
