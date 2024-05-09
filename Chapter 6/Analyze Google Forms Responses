@@ -1,0 +1,14 @@
+function analyzeResponses() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const summary = {};
+ data.forEach((response, index) => {
+ if (index === 0) return; // Skip header row
+ response.forEach((answer, i) => {
+ if (!summary[i]) summary[i] = {};
+ if (!summary[i][answer]) summary[i][answer] = 0;
+ summary[i][answer]++;
+ });
+ });
+ Logger.log(summary);
+}
