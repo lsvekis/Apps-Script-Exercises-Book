@@ -1,0 +1,33 @@
+function createCalendarEvents() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const rows = sheet.getDataRange().getValues();
+  const calendar = CalendarApp.getDefaultCalendar();
+  const resultsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Event Details");
+
+  // Check if the results sheet exists, if not create it
+  if (!resultsSheet) {
+    resultsSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("Event Details");
+    resultsSheet.appendRow(["Event ID", "Title", "Start Time", "End Time", "Description"]);
+  }
+
+  // Loop through each row in the data sheet, skipping the header
+  for (let i = 1; i < rows.length; i++) {
+    const [title, startTime, endTime, description] = rows[i];
+    const event = calendar.createEvent(title, new Date(startTime), new Date(endTime), {description: description});
+
+    // Append event details to the results sheet
+    resultsSheet.appendRow([event.getId(), title, startTime, endTime, description]);
+  }
+
+  SpreadsheetApp.flush(); // Apply changes to the spreadsheet
+  Logger.log('Events created and details recorded.');
+}
+
+function setup() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  sheet.appendRow(["Title", "Start Time", "End Time", "Description"]);
+  // Add sample data
+  sheet.appendRow(["Team Meeting", "2024-06-01T09:00:00", "2024-06-01T10:00:00", "Monthly team meeting"]);
+  sheet.appendRow(["Project Review", "2024-06-02T14:00:00", "2024-06-02T15:00:00", "Review project milestones"]);
+  Logger.log('Setup complete. Ready to create events.');
+}
