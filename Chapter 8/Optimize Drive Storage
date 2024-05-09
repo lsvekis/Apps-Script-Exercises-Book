@@ -1,0 +1,13 @@
+function listLargeFiles() {
+ const folder = DriveApp.getRootFolder();
+ const files = folder.getFiles();
+ const largeFiles = [];
+ const sizeLimit = 10000000; // 10 MB
+ while (files.hasNext()) {
+ const file = files.next();
+ if (file.getSize() > sizeLimit) {
+ largeFiles.push(file.getName() + " - " + (file.getSize() / 1024 / 1024).toFixed(2) + " MB");
+ }
+ }
+ Logger.log("Files larger than 10 MB: \n" + largeFiles.join("\n"));
+}
