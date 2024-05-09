@@ -1,0 +1,15 @@
+function sendWeeklyReport() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const dataRange = sheet.getDataRange();
+ const data = dataRange.getValues();
+ let htmlBody = "<h1>Weekly Report</h1><table border='1'>";
+ data.forEach((row, index) => {
+ htmlBody += "<tr>" + row.map(cell => `<td>${cell}</td>`).join("") + "</tr>";
+ });
+ htmlBody += "</table>";
+ MailApp.sendEmail({
+ to: EMAIL,
+ subject: "Your Weekly Report",
+ htmlBody: htmlBody
+ });
+}
