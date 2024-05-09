@@ -1,0 +1,15 @@
+function addDropdown() {
+  // Access the active spreadsheet and its active sheet
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Define the options for the dropdown
+  const options = ['Fruit','Vegetable','Dairy'];
+  
+  // Create a data validation rule with the options
+  const validationRule = SpreadsheetApp.newDataValidation()
+                                        .requireValueInList(options, true)
+                                        .build();
+  
+  // Apply the data validation rule to cell A1
+  sheet.getRange('A1').setDataValidation(validationRule);
+}
