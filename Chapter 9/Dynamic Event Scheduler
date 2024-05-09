@@ -1,0 +1,15 @@
+function scheduleEvents() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getSheetByName("Events");
+ const data = sheet.getDataRange().getValues();
+ const calendar = CalendarApp.getDefaultCalendar();
+ data.forEach((row, index) => {
+ if (index === 0 || row[4] === "Yes") return; // Skip header and already scheduled events
+ const startTime = new Date(row[1] + ' ' + row[2]);
+ const endTime = new Date(row[1] + ' ' + row[3]);
+ const event = calendar.createEvent(row[0], startTime, endTime);
+ Logger.log('Event created: ' + event.getTitle());
+ sheet.getRange(index + 1, 5).setValue("Yes");
+ });
+}
+
