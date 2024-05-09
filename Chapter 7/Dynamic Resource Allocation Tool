@@ -1,0 +1,13 @@
+function allocateResources() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getRange("A2:C" + sheet.getLastRow()).getValues();
+ const resources = { "Resource1": 5, "Resource2": 3 }; // Example resources available
+ data.forEach((row, index) => {
+ if (row[1] in resources && resources[row[1]] > 0) {
+ sheet.getRange(index + 2, 3).setValue('Allocated');
+ resources[row[1]] -= 1;
+ } else {
+ sheet.getRange(index + 2, 3).setValue('Not Available');
+ }
+ });
+}
