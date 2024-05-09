@@ -1,0 +1,9 @@
+function updateBudget() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const categories = sheet.getDataRange().getValues();
+ categories.forEach((category, i) => {
+ if (i === 0) return; // Skip header
+ const remaining = category[1] - category[2]; // Subtract current spend from budget
+ sheet.getRange(i + 1, 4).setValue(remaining); // Update remaining budget
+ });
+}
