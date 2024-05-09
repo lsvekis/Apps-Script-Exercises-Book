@@ -1,0 +1,15 @@
+function updateTimeline() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange("A2:D" + sheet.getLastRow()); // Adjust range as needed
+ const data = range.getValues();
+ const today = new Date();
+ data.forEach((row, i) => {
+ const dueDate = new Date(row[2]);
+ if (row[3] !== "Completed" && dueDate < today) {
+ sheet.getRange(i + 2, 4).setValue("Overdue");
+ sheet.getRange(i + 2, 1, 1, 4).setBackground("#FFCCCC"); // Highlight overdue rows
+ } else if (dueDate >= today && dueDate <= new Date(today.getTime() + (7 * 24 * 60 * 60 * 1000))) {
+ sheet.getRange(i + 2, 1, 1, 4).setBackground("#FFFF99"); // Highlight upcoming deadlines
+ }
+ });
+}
