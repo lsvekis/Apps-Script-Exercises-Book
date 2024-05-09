@@ -1,0 +1,10 @@
+function conditionalSharing() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getRange("A2:B" + sheet.getLastRow()).getValues(); // Assume emails in column A and conditions in column B
+ const docId = 'your-doc-id'; // Replace with your Google Doc ID
+ data.forEach(row => {
+ if (row[1] === "Approved") {
+ DriveApp.getFileById(docId).addEditor(row[0]);
+ }
+ });
+}
