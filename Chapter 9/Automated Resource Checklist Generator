@@ -1,0 +1,23 @@
+function generateChecklist() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // Retrieve project names and details
+  const projects = ss.getSheetByName("Projects").getDataRange().getValues();
+  // Retrieve checklist tasks
+  const template = ss.getSheetByName("Checklist Template").getRange("A2:A" + ss.getSheetByName("Checklist Template").getLastRow()).getValues().flat();
+    // Access or create the 'Checklists' sheet
+  let checklistSheet = ss.getSheetByName("Checklists");
+  if (!checklistSheet) {
+    checklistSheet = ss.insertSheet("Checklists");
+  } else {
+    checklistSheet.clear();  // Clear existing content if the sheet already exists
+  }
+  // Generate checklists for each project
+  projects.forEach((project, index) => {
+    if (index === 0) return; // Skip header row
+    checklistSheet.appendRow([`Checklist for ${project[0]}`]); // Project name from column 0
+    template.forEach(task => {
+      checklistSheet.appendRow([task]);
+    });
+    checklistSheet.appendRow(['']); // Add an empty row after each checklist for separation
+  });
+}
