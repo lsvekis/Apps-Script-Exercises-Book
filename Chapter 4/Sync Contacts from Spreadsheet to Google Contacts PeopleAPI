@@ -1,0 +1,41 @@
+function syncContacts() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const service = PeopleService.People.Connections;
+  const peopleApi = service.list('people/me', {
+    personFields: 'emailAddresses',
+    pageSize: 1000
+  });
+  
+  // Create a map of existing emails for quick lookup
+  const existingEmails = new Set();
+  if (peopleApi.connections) {
+    peopleApi.connections.forEach(person => {
+      if (person.emailAddresses) {
+        person.emailAddresses.forEach(email => existingEmails.add(email.value));
+      }
+    });
+  }
+
+  // Process each row in the spreadsheet
+  data.forEach((row, index) => {
+    if (index === 0) return; // Skip headers
+    const email = row[2];
+    
+    // Check if email already exists
+    if (!existingEmails.has(email)) {
+      // Create contact if it does not exist
+      const contactToCreate = {
+        names: [{givenName: row[0], familyName: row[1]}],
+        emailAddresses: [{value: email}]
+      };
+
+      try {
+        PeopleService.People.createContact({person: contactToCreate});
+        console.log('Contact created for:', email);
+      } catch (e) {
+        console.error('Failed to create contact for:', email, e);
+      }
+    }
+  });
+}
