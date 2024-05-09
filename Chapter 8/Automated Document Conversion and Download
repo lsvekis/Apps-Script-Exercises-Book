@@ -1,0 +1,17 @@
+function convertAndDownload() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const docIds = sheet.getRange("A2:A" + lastRow).getValues();
+  const downloadFolderId = FOLDERID;  // Replace with your download folder ID
+  const downloadFolder = DriveApp.getFolderById(downloadFolderId);
+  docIds.forEach(row => {
+    const docId = row[0];
+    if (docId) {  // Check if docId is not empty
+      const doc = DriveApp.getFileById(docId);
+      const blob = doc.getBlob().getAs('application/pdf');
+      const newFile = downloadFolder.createFile(blob);
+      newFile.setName(doc.getName() + ".pdf");
+      Logger.log('Converted and downloaded: ' + doc.getName());
+    }
+  });
+}
