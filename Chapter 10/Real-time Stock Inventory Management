@@ -1,0 +1,31 @@
+function updateInventory() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const inventorySheet = ss.getSheetByName("Inventory");
+  const salesSheet = ss.getSheetByName("Sales");
+  // Get inventory data
+  const inventoryRange = inventorySheet.getRange("A2:C" + inventorySheet.getLastRow());
+  const inventory = inventoryRange.getValues();
+  // Get sales data
+  const salesRange = salesSheet.getRange("A2:B" + salesSheet.getLastRow());
+  const sales = salesRange.getValues();
+  // Map to store inventory data by item name
+  const inventoryMap = new Map();
+  inventory.forEach(row => inventoryMap.set(row[0], row));
+  // Process each sale
+  sales.forEach(sale => {
+    if (inventoryMap.has(sale[0])) {
+      const itemData = inventoryMap.get(sale[0]);
+      itemData[1] -= sale[1]; // Subtract sold quantity from stock
+      if (itemData[1] <= itemData[2]) { // Check if below reorder threshold
+        MailApp.sendEmail(EMAIL, "Reorder Alert", `Please reorder ${sale[0]}. Current stock: ${itemData[1]}`);
+      }
+      inventoryMap.set(sale[0], itemData); // Update map
+    }
+  });
+  // Update inventory sheet with new stock levels
+  const updatedInventory = Array.from(inventoryMap.values());
+  const startRow = 2;
+  const endRow = startRow + updatedInventory.length - 1;
+  const rangeToUpdate = inventorySheet.getRange("A" + startRow + ":C" + endRow);
+  rangeToUpdate.setValues(updatedInventory);
+}
