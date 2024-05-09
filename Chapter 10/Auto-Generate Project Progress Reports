@@ -1,0 +1,10 @@
+function generateProgressReports() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const projects = sheet.getDataRange().getValues();
+ const today = new Date();
+ projects.forEach((project, i) => {
+ if (i === 0) return; // Skip header
+ const report = `Progress Report for ${project[0]}:\nStarted: ${project[1]}\nDue: ${project[2]}\nCurrent Progress: ${project[3]}%`;
+ MailApp.sendEmail("stakeholder@example.com", "Weekly Progress Report", report);
+ });
+}
