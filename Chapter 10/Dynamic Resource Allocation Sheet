@@ -1,0 +1,14 @@
+function allocateResources() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const tasks = sheet.getDataRange().getValues();
+ const resources = { 'Resource1': 2, 'Resource2': 3 }; // Available quantities for resources
+ tasks.forEach((task, i) => {
+ if (i === 0 || task[3]) return; // Skip header or already assigned tasks
+ if (resources[task[2]] > 0) {
+ sheet.getRange(i + 1, 4).setValue('Resource1'); // Assign Resource1
+ resources[task[2]]--;
+ } else {
+ sheet.getRange(i + 1, 4).setValue('Insufficient resources');
+ }
+ });
+}
