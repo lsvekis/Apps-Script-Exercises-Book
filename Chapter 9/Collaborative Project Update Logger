@@ -1,0 +1,14 @@
+function logProjectUpdates() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ data.forEach((row, index) => {
+ if (index === 0 || row[3] === "Notified") return; // Skip header and already notified rows
+ const emailBody = `Update on ${row[0]} by ${row[1]}:\n${row[2]}`;
+ MailApp.sendEmail({
+ to: "team-email-group@example.com",
+ subject: "Project Update Notification",
+ body: emailBody
+ });
+ sheet.getRange(index + 1, 4).setValue("Notified"); // Mark as notified
+ });
+}
