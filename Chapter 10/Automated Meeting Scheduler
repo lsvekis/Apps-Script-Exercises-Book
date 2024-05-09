@@ -1,0 +1,53 @@
+function findMeetingTimes() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Meeting Times");
+  if (!sheet) {
+    console.log("Meeting Times sheet does not exist. Please create one.");
+    return;
+  }
+
+  const teamMembers = ["alice@example.com", "bob@example.com"]; // Team member email addresses
+  const duration = 30; // Meeting duration in minutes
+  const start = new Date();
+  start.setHours(9, 0, 0); // Start time at 9 AM today
+  const end = new Date(start);
+  end.setHours(17, 0, 0); // End time at 5 PM today
+
+  const meetingTimes = [];
+
+  teamMembers.forEach(email => {
+    const calendar = CalendarApp.getCalendarById(email);
+    const events = calendar.getEvents(start, end);
+
+    // Calculate free times between events
+    let lastEndTime = start;
+    events.forEach(event => {
+      const eventStart = event.getStartTime();
+      const eventEnd = event.getEndTime();
+      if (lastEndTime < eventStart) {
+        // Check if there is enough time between the last end time and the current event start time
+        const gap = (eventStart - lastEndTime) / 60000; // gap in minutes
+        if (gap >= duration) {
+          meetingTimes.push([email, lastEndTime, eventStart]);
+        }
+      }
+      lastEndTime = eventEnd;
+    });
+
+    // Check for time after the last event of the day
+    if (lastEndTime < end) {
+      const gap = (end - lastEndTime) / 60000; // gap in minutes
+      if (gap >= duration) {
+        meetingTimes.push([email, lastEndTime, end]);
+      }
+    }
+  });
+
+  // Write the available times to the sheet
+  if (meetingTimes.length > 0) {
+    const range = sheet.getRange(2, 1, meetingTimes.length, 3);
+    range.setValues(meetingTimes);
+  } else {
+    console.log("No available meeting times found.");
+  }
+}
