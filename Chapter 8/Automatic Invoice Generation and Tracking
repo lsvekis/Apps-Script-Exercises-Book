@@ -1,0 +1,19 @@
+function generateAndTrackInvoices() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const data = sheet.getRange("A2:D" + lastRow).getValues();
+  
+  data.forEach((row, index) => {
+    if (row[3] !== "Paid") {
+      const invoiceDoc = DocumentApp.create('Invoice for ' + row[0]);
+      const body = invoiceDoc.getBody();
+      body.appendParagraph('Invoice for: ' + row[0]);
+      body.appendParagraph('Amount Due: ' + row[1]);
+      body.appendParagraph('Due Date: ' + row[2]);
+      // Additional invoice formatting can include setting fonts, adding tables, etc.
+      invoiceDoc.saveAndClose();
+      // Update the sheet with the link to the new invoice
+      sheet.getRange(index + 2, 5).setValue(invoiceDoc.getUrl());
+    }
+  });
+}
