@@ -1,0 +1,10 @@
+function delegateTasks() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tasks");
+ const data = sheet.getDataRange().getValues();
+ const teamMembers = ['Alice', 'Bob', 'Charlie']; // Example team members
+ data.forEach((task, index) => {
+ if (index === 0 || task[1] || task[2] === "Completed") return; // Skip header, already assigned, or completed tasks
+ const member = teamMembers[index % teamMembers.length]; // Rotate team members for task assignment
+ sheet.getRange(index + 1, 2).setValue(member); // Assign task
+ });
+}
