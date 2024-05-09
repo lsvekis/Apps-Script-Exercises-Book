@@ -1,0 +1,14 @@
+function sendInvoiceReminders() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const invoices = sheet.getDataRange().getValues();
+ const today = new Date();
+ invoices.forEach((invoice, i) => {
+ if (i === 0 || invoice[4] === "Paid") return; // Skip header and paid invoices
+ const dueDate = new Date(invoice[3]);
+ if (dueDate < today) {
+ const subject = `Reminder: Invoice ${invoice[0]} is overdue`;
+ const body = `Dear customer,\n\nYour invoice ID ${invoice[0]} was due on ${invoice[3]}. Please arrange payment at your earliest convenience.\n\nBest regards,\nYour Company`;
+ MailApp.sendEmail(invoice[1], subject, body);
+ }
+ });
+}
