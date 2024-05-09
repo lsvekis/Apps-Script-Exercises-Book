@@ -1,0 +1,27 @@
+function syncContacts() {
+  const peopleApi = People.People.Connections.list('people/me', {
+    personFields: 'names,phoneNumbers',
+    pageSize: 1000
+  });
+  
+  const connections = peopleApi.connections;
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = [];
+  
+  if (connections) {
+    connections.forEach((person) => {
+      const name = person.names ? person.names[0].displayName : 'No name';
+      const phones = person.phoneNumbers ? person.phoneNumbers.map(phone => phone.value).join(", ") : 'No phone';
+      data.push([name, phones]);
+    });
+  }
+  
+  // Clear the existing data
+  sheet.clear();
+  // Prepare the sheet with headers
+  sheet.appendRow(['Name', 'Phone Numbers']);
+  // Write new data to the sheet
+  if (data.length > 0) {
+    sheet.getRange(2, 1, data.length, 2).setValues(data);
+  }
+}
