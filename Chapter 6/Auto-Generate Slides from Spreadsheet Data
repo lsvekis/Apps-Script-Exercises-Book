@@ -1,0 +1,20 @@
+function generateSlides() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const data = sheet.getDataRange().getValues();
+ const presentation = SlidesApp.create('New Presentation');
+ data.forEach((row, index) => {
+ if (index === 0) return; // Skip headers
+ const slide = presentation.appendSlide(SlidesApp.PredefinedLayout.TITLE_AND_BODY);
+ slide.getPageElements()[0].asShape().getText().setText(row[0]); // Title
+ slide.getPageElements()[1].asShape().getText().setText(row[1]); // Description
+ if (row[2]) {
+ try {
+ const image = slide.insertImage(row[2]);
+ image.alignOnPage(SlidesApp.AlignmentPosition.CENTER);
+ } catch (e) {
+ Logger.log('Invalid image URL at row ' + (index + 1));
+ }
+ }
+ });
+ Logger.log('Presentation created: ' + presentation.getUrl());
+}
