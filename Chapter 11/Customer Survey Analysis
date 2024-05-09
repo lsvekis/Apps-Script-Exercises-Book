@@ -1,0 +1,20 @@
+function analyzeSurvey() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const responses = sheet.getDataRange().getValues();
+ responses.forEach((response, index) => {
+ if (index === 0) return; // Skip header row
+ const category = categorizeFeedback(response[2]);
+ sheet.getRange(index + 1, 4).setValue(category); // Set feedback category
+ });
+ // Summarize feedback categories
+ const summary = responses.reduce((acc, cur) => {
+ if (cur[3]) acc[cur[3]] = (acc[cur[3]] || 0) + 1;
+ return acc;
+ }, {});
+ Logger.log("Feedback Summary: ", summary);
+}
+function categorizeFeedback(feedback) {
+ if (feedback.includes("excellent")) return "Positive";
+ if (feedback.includes("poor")) return "Negative";
+ return "Neutral";
+}
