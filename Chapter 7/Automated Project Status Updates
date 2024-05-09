@@ -1,0 +1,22 @@
+function updateProjectStatus() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const data = sheet.getRange("A2:C" + lastRow).getValues(); // Get range from A2 to C and the last row with data
+  const today = new Date();
+  data.forEach((row, i) => {
+    const projectName = row[0]; // Just for logging purposes
+    const dueDate = new Date(row[1]);
+    const completionDate = row[2] ? new Date(row[2]) : null;
+    let status = "On Track"; // Default status
+    if (completionDate && completionDate <= dueDate) {
+      status = "Completed On Time";
+    } else if (completionDate && completionDate > dueDate) {
+      status = "Completed Late";
+    } else if (!completionDate && today > dueDate) {
+      status = "Overdue";
+    }
+    // Update the status in column D
+    sheet.getRange(i + 2, 4).setValue(status);
+    console.log(`Updated ${projectName} to ${status}`); // Optional: Log the update action
+  });
+}
