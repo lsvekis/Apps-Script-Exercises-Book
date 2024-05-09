@@ -1,0 +1,22 @@
+function generateReport() {
+  // Access the active sheet in the active spreadsheet
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Retrieve all data from the sheet
+  const data = sheet.getDataRange().getValues();
+  
+  // Create a new document named 'Data Report'
+  const doc = DocumentApp.create('Data Report');
+  
+  // Access the body of the document
+  const body = doc.getBody();
+  
+  // Append each row of the spreadsheet data as a paragraph in the document
+  data.forEach((row, index) => {
+    // Join the elements of the row array with a comma and append it as a paragraph
+    body.appendParagraph(`Row ${index + 1}: ${row.join(", ")}`);
+  });
+  
+  // Log the URL of the created document for easy access
+  Logger.log(`Document created: ${doc.getUrl()}`);
+}
