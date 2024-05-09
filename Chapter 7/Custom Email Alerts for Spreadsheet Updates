@@ -1,0 +1,9 @@
+function sendCustomAlerts() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const value = sheet.getRange("B2").getValue(); // Monitor cell B2 for changes
+ const threshold = 10000; // Set your threshold value
+ if (value >= threshold) {
+ const message = `Alert: The value of B2 has reached ${value}, which is above the threshold of ${threshold}.`;
+ MailApp.sendEmail("your-email@example.com", "Threshold Alert", message);
+ }
+}
