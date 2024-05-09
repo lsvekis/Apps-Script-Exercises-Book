@@ -1,0 +1,11 @@
+function updateClientReviews() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const clients = sheet.getDataRange().getValues();
+ const today = new Date();
+ clients.forEach((client, i) => {
+ if (i === 0 || new Date(client[3]) > today) return; // Skip header and clients not due for review
+ const nextReview = new Date();
+ nextReview.setFullYear(today.getFullYear() + 1); // Schedule next review for one year later
+ sheet.getRange(i + 1, 4).setValue(nextReview);
+ });
+}
