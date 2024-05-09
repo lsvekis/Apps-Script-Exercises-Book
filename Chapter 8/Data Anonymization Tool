@@ -1,0 +1,9 @@
+function anonymizeData() {
+ const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ const range = sheet.getRange("B2:B" + sheet.getLastRow()); // Assume sensitive data is in column B
+ const data = range.getValues();
+ const anonymizedData = data.map(row => {
+ return [row[0].replace(/[\w\.-]+@[\w\.-]+/, "xxxx@xxxx.com")]; // Example for email anonymization
+ });
+ range.setValues(anonymizedData);
+}
