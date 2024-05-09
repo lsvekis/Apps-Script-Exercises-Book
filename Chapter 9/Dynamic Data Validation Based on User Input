@@ -1,0 +1,17 @@
+function dynamicDataValidation() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getActiveSheet();
+  const categories = {
+    "Fruit": ["Apple", "Banana", "Cherry"],
+    "Vegetable": ["Carrot", "Lettuce", "Onion"],
+    "Dairy": ["Milk", "Cheese", "Butter"]
+  };
+  // Get the category selected in A1
+  const category = sheet.getRange("A1").getValue();
+  // Get the list of options for the selected category
+  const options = categories[category] || [];
+  // Create a data validation rule requiring the value to be from the options list
+  const validationRule = SpreadsheetApp.newDataValidation().requireValueInList(options, true).build();
+  // Apply this data validation rule to the range B1:B10
+  sheet.getRange("B1:B10").setDataValidation(validationRule);
+}
