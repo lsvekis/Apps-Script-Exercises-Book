@@ -1,0 +1,25 @@
+function analyzeFeedback() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const data = sheet.getRange("A2:B" + lastRow).getValues(); // Adjust to fetch only up to the Feedback Text column
+  const sentimentScores = { "positive": 0, "neutral": 0, "negative": 0 };
+
+  data.forEach((row, index) => {
+    const sentiment = analyzeSentiment(row[1]); // Call to analyze sentiment
+    sheet.getRange(index + 2, 3).setValue(sentiment); // Set sentiment in column C
+    sentimentScores[sentiment] += 1;
+  });
+
+  Logger.log(sentimentScores);
+}
+
+// Mock-up of analyzeSentiment function
+function analyzeSentiment(text) {
+  if (text.includes("love") || text.includes("Perfect")) {
+    return "positive";
+  } else if (text.includes("okay") || text.includes("expected")) {
+    return "neutral";
+  } else {
+    return "negative";
+  }
+}
