@@ -1,0 +1,15 @@
+function syncCalendarEvents() {
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getSheetByName("Team Dashboard") || ss.insertSheet("Team Dashboard");
+ const calendarId = 'your-calendar-id@example.com';
+ const calendar = CalendarApp.getCalendarById(calendarId);
+ const startDate = new Date();
+ const endDate = new Date();
+ endDate.setDate(startDate.getDate() + 30); // Next 30 days
+ const events = calendar.getEvents(startDate, endDate);
+ sheet.clear(); // Clear existing content
+ sheet.appendRow(['Date', 'Event Title', 'Description']);
+ events.forEach(event => {
+ sheet.appendRow([event.getStartTime(), event.getTitle(), event.getDescription()]);
+ });
+}
