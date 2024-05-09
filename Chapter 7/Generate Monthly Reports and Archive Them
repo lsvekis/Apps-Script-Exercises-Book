@@ -1,0 +1,34 @@
+function generateAndArchiveReport() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getActiveSheet();
+  const folderId = FOLDERID; // Replace 'FOLDERID' with the actual ID of your archive folder
+  // Optional: Set the sheet to be alone in the spreadsheet temporarily if there are multiple sheets
+  const allSheets = spreadsheet.getSheets();
+  spreadsheet.setActiveSheet(sheet);
+  spreadsheet.moveActiveSheet(1);
+  // Construct URL to download PDF
+  const url = spreadsheet.getUrl().replace(/edit$/, '') + 'export?'
+            + 'exportFormat=pdf&format=pdf'
+            + '&size=letter'
+            + '&portrait=true'
+            + '&fitw=true'       
+            + '&top_margin=0.75'              
+            + '&bottom_margin=0.75'          
+            + '&left_margin=0.7'             
+            + '&right_margin=0.7'           
+            + '&sheetnames=false&printtitle=false'
+            + '&pagenumbers=false&gridlines=false'
+            + '&fzr=false'                   
+            + '&gid=' + sheet.getSheetId(); // sheetId of the specific sheet
+  
+  const headers = {
+    'Authorization': 'Bearer ' +  ScriptApp.getOAuthToken()
+  };
+  // Fetch the PDF blob
+  const response = UrlFetchApp.fetch(url, {headers: headers});
+  const blob = response.getBlob().setName('Monthly_Report_' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyyMMdd'T'HHmmss") + '.pdf');
+  // Create file in Drive and move it to the specified folder
+  const file = DriveApp.createFile(blob);
+  const folder = DriveApp.getFolderById(folderId);
+  file.moveTo(folder);
+}
